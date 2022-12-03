@@ -7,6 +7,7 @@ import sys
 import tempfile
 import webbrowser
 from typing import TYPE_CHECKING
+import datetime
 
 from jinja2 import Environment, FileSystemLoader
 from mastodon import Mastodon
@@ -63,6 +64,8 @@ def run(
             "posts": threshold_posts,
             "boosts": threshold_boosts,
             "mastodon_base_url": mastodon_base_url,
+            "mastdon_username": mastodon_username,
+            "date": datetime.datetime.now().strftime("%Y-%m-%d %h:%m")
         })
 
 
