@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from config import mastodon_base_url, mastodon_token, mastodon_username
 import argparse
 import os
 import sys
@@ -24,7 +25,8 @@ def render_and_open_digest(context: dict) -> None:
     template = environment.get_template("digest.html.jinja")
     output_html = template.render(context)
 
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html") as out_file:
+    with tempfile.NamedTemporaryFile("w", delete=False,
+                                     suffix=".html") as out_file:
         final_url = f"file://{out_file.name}"
         out_file.write(output_html)
 
@@ -61,8 +63,7 @@ def run(
             "posts": threshold_posts,
             "boosts": threshold_boosts,
             "mastodon_base_url": mastodon_base_url,
-        }
-    )
+        })
 
 
 if __name__ == "__main__":
@@ -104,17 +105,6 @@ if __name__ == "__main__":
         """,
     )
     args = arg_parser.parse_args()
-
-    mastodon_token = os.getenv("MASTODON_TOKEN")
-    mastodon_base_url = os.getenv("MASTODON_BASE_URL")
-    mastodon_username = os.getenv("MASTODON_USERNAME")
-
-    if not mastodon_token:
-        sys.exit("Missing environment variable: MASTODON_TOKEN")
-    if not mastodon_base_url:
-        sys.exit("Missing environment variable: MASTODON_BASE_URL")
-    if not mastodon_username:
-        sys.exit("Missing environment variable: MASTODON_USERNAME")
 
     run(
         args.hours,
