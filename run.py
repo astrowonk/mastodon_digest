@@ -4,6 +4,7 @@ from config import mastodon_base_url, mastodon_token, mastodon_username
 import argparse
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 import datetime
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 
 def render_digest(context: dict, output_dir: Path) -> None:
     environment = Environment(loader=FileSystemLoader("templates/"))
-    template = environment.get_template("digest.html.jinja")
+    template = environment.get_template("index.html.jinja")
     output_html = template.render(context)
     output_file_path = output_dir / 'index.html'
     output_file_path.write_text(output_html)
@@ -59,9 +60,13 @@ def run(
             "posts": threshold_posts,
             "boosts": threshold_boosts,
             "mastodon_base_url": mastodon_base_url,
-            "mastdon_username": mastodon_username,
-            "date": datetime.datetime.now().strftime("%Y-%m-%d %h:%m")
-        },output_dir=output_dir)
+            "rendered_at":
+            datetime.utcnow().strftime('%B %d, %Y at %H:%M:%S UTC'),
+            "threshold": threshold.get_name(),
+            "scorer": scorer.get_name(),
+        },
+        output_dir=output_dir,
+    )
 
 
 if __name__ == "__main__":
