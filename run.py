@@ -61,7 +61,7 @@ def run(
             "boosts": threshold_boosts,
             "mastodon_base_url": mastodon_base_url,
             "rendered_at":
-            datetime.utcnow().strftime('%B %d, %Y at %H:%M:%S UTC'),
+            datetime.datetime.utcnow().strftime('%B %d, %Y at %H:%M:%S UTC'),
             "threshold": threshold.get_name(),
             "scorer": scorer.get_name(),
         },
