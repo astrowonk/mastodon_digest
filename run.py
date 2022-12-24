@@ -4,7 +4,6 @@ from config import mastodon_base_url, mastodon_token, mastodon_username
 import argparse
 import os
 import sys
-from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 import datetime
@@ -76,7 +75,8 @@ def run(
                 "mastodon_base_url":
                 mastodon_base_url,
                 "rendered_at":
-                datetime.utcnow().strftime("%B %d, %Y at %H:%M:%S UTC"),
+                datetime.datetime.utcnow().strftime(
+                    "%B %d, %Y at %H:%M:%S UTC"),
                 "timeline_name":
                 timeline,
                 "threshold":
@@ -156,10 +156,6 @@ if __name__ == "__main__":
     timelineType, *_ = timeline.split(":", 1)
     if not timelineType in validTimelineTypes:
         timeline = "home"
-
-    mastodon_token = os.getenv("MASTODON_TOKEN")
-    mastodon_base_url = os.getenv("MASTODON_BASE_URL")
-    mastodon_username = os.getenv("MASTODON_USERNAME")
 
     if not mastodon_token:
         sys.exit("Missing environment variable: MASTODON_TOKEN")
